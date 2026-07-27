@@ -4,14 +4,27 @@
   import MemoryModal from './MemoryModal.svelte';
   import SpecialMessage from './SpecialMessage.svelte';
   import GiftsSection from './GiftsSection.svelte';
-  import { memories, specialPlanet } from './data/memories.js';
+  import { memories, specialPlanet, specialPlanet2 } from './data/memories.js';
+
+  const specials = [specialPlanet, specialPlanet2];
 
   let openMemory = $state(null);
   let showGifts = $state(false);
-  let zooming = $state(false); // zooming toward the special planet
+  let zooming = $state(false); // zooming toward a special planet
+  let activeSpecial = $state(null); // which special planet is open
   let showSpecial = $state(false);
+  // tiny floating star particles, scattered once on load
+  const particles = Array.from({ length: 26 }, (_, i) => ({
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: 1 + Math.random() * 2,
+    dur: 14 + Math.random() * 18,
+    delay: Math.random() * 16,
+    twinkle: 2 + Math.random() * 3,
+  }));
 
-  function openSpecial() {
+  function openSpecial(planet) {
+    activeSpecial = planet;
     zooming = true;
     setTimeout(() => (showSpecial = true), 900);
   }
@@ -19,6 +32,7 @@
   function closeSpecial() {
     showSpecial = false;
     zooming = false;
+    activeSpecial = null;
   }
 </script>
 
@@ -27,12 +41,22 @@
   <div class="stars layer-1"></div>
   <div class="stars layer-2"></div>
 
+  <div class="particles" aria-hidden="true">
+    {#each particles as p}
+      <span
+        class="particle"
+        style="left:{p.x}%; top:{p.y}%; width:{p.size}px; height:{p.size}px; --dur:{p.dur}s; --delay:{p.delay}s; --twinkle:{p.twinkle}s;"
+      ></span>
+    {/each}
+  </div>
+
   <div
     class="scene"
     class:zooming
-    style="transform-origin: {specialPlanet.x}% {specialPlanet.y}%;"
+    style="transform-origin: {(activeSpecial ?? specialPlanet).x}% {(activeSpecial ?? specialPlanet).y}%;"
   >
     <header class="header">
+      <p class="gfday">Happy National Girlfriend's Day 💗</p>
       <h1>Our Universe</h1>
       <p>hover a rose... then click it 💗</p>
     </header>
@@ -49,17 +73,19 @@
       </button>
     {/each}
 
-    <!-- the far-off planet, just for her -->
-    <button
-      class="planet special"
-      style="left:{specialPlanet.x}%; top:{specialPlanet.y}%; --delay:2.2s; --drift:9s;"
-      onclick={openSpecial}
-      aria-label={specialPlanet.name}
-    >
-      <RosePlanet size={specialPlanet.size} />
-      <span class="planet-name">{specialPlanet.name}</span>
-      <span class="sparkle" aria-hidden="true">✨</span>
-    </button>
+    <!-- the far-off planets, just for her -->
+    {#each specials as planet, i}
+      <button
+        class="planet special"
+        style="left:{planet.x}%; top:{planet.y}%; --delay:{2.2 + i * 1.4}s; --drift:{9 + i}s;"
+        onclick={() => openSpecial(planet)}
+        aria-label={planet.name}
+      >
+        <RosePlanet size={planet.size} />
+        <span class="planet-name">{planet.name}</span>
+        <span class="sparkle" aria-hidden="true">✨</span>
+      </button>
+    {/each}
   </div>
 
   <button class="gifts-btn" onclick={() => (showGifts = true)}>
@@ -70,8 +96,13 @@
     <MemoryModal memory={openMemory} onClose={() => (openMemory = null)} />
   {/if}
 
-  {#if showSpecial}
-    <SpecialMessage message={specialPlanet.message} onClose={closeSpecial} />
+  {#if showSpecial && activeSpecial}
+    <SpecialMessage
+      message={activeSpecial.message}
+      photo={activeSpecial.photo ?? null}
+      lock={activeSpecial.lock ?? null}
+      onClose={closeSpecial}
+    />
   {/if}
 
   {#if showGifts}
@@ -137,6 +168,33 @@
     to { opacity: 0.9; }
   }
 
+  /* tiny white star particles that twinkle and drift upward */
+  .particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+    animation:
+      particle-drift var(--dur) linear var(--delay) infinite,
+      particle-twinkle var(--twinkle) ease-in-out infinite alternate;
+  }
+
+  @keyframes particle-drift {
+    from { transform: translateY(0); }
+    to { transform: translateY(-110vh); }
+  }
+
+  @keyframes particle-twinkle {
+    from { opacity: 0.15; }
+    to { opacity: 0.9; }
+  }
+
   .scene {
     position: absolute;
     inset: 0;
@@ -156,6 +214,19 @@
     right: 0;
     text-align: center;
     pointer-events: none;
+  }
+
+  .gfday {
+    font-family: var(--font-script);
+    font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+    color: var(--peach-fuzz);
+    text-shadow: 0 0 20px rgba(255, 201, 181, 0.6);
+    animation: gfday-glow 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes gfday-glow {
+    from { text-shadow: 0 0 12px rgba(255, 201, 181, 0.4); }
+    to { text-shadow: 0 0 28px rgba(255, 201, 181, 0.85); }
   }
 
   .header h1 {

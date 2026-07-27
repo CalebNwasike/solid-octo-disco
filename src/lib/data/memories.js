@@ -56,6 +56,36 @@ export const memories = [
     y: 78,
     size: 120,
   },
+  {
+    id: 'rose-5',
+    name: 'My smart girl',
+    photo: '/photos/memory-5.jpg',
+    quote: 'this is my beautiful woman just being as smart as ever',
+    author: null,
+    x: 8,
+    y: 58,
+    size: 115,
+  },
+  {
+    id: 'rose-6',
+    name: 'I really do',
+    photo: '/photos/memory-6.jpg',
+    quote: 'I really do love you alot 🥺 ...',
+    author: null,
+    x: 57,
+    y: 44,
+    size: 125,
+  },
+  {
+    id: 'rose-7',
+    name: 'Just look at her',
+    photo: '/photos/memory-7.jpg',
+    quote: 'look at this beautiful girl',
+    author: null,
+    x: 88,
+    y: 36,
+    size: 120,
+  },
 ];
 
 // The far-off planet with the special message for Mariah.
@@ -68,4 +98,24 @@ export const specialPlanet = {
   size: 72,
   message:
     'Mariah, you are my entire world and my eternal happiness. My affection for you reaches beyond the furthest galaxy. Our bond is timeless, shining with the perfection of the stars. Just as the cosmos slowly developed its breathtaking splendor through countless cosmic events, our relationship becomes more stunning as we grow together. You are my universe, and I promise to be the person who deserves your love forever.',
+};
+
+// The second special star — locked behind your "serious word" 🍍
+// It has a photo too: drop the image in public/photos/ and match
+// the "photo" value below.
+export const specialPlanet2 = {
+  id: 'special-2',
+  name: 'Our serious word ✨',
+  x: 12,
+  y: 16,
+  size: 68,
+  photo: '/photos/special.jpg',
+  lock: {
+    question: "What's our serious word?",
+    // she can type it in any capitalization
+    answer: 'pineapple',
+    hint: 'you know the one... 🍍',
+  },
+  message:
+    "This is to our small piece of our journey, that will only get better and more beautiful with time. I'm in awe that I've found a woman like you. You deserve everything I have to offer, down to my entire being. You are bright and kind, and one in a million. The way we are weird together is something that I've always deeply cherished. I love how odd we are in our jokes and everyday memories we create. I want to be let back into your heart. I want you to call me yours again. I miss our soul tie, and I want to rebuild our foundation of our love. I would climb mountains and go through rivers for you, and i've only loved you more and more as the days have passed. You are my everything and my reason for why I have joy in my life.",
 };
