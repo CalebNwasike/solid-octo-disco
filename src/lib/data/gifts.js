@@ -14,6 +14,21 @@
 // You can use url, code, or BOTH on the same gift.
 // ============================================================
 
+// The gifts lock 🔐 — she either types the password, or earns it
+// the hard way: 100 points in Flappy Mariah lol.
+// Drop her face for the flappy bird in public/photos/flappy-mariah.jpg
+export const giftsLock = {
+  title: 'Ah ah ah...',
+  message: 'not so fast, you have to say the password for the giftssss',
+  hint: "Hint: it's on your bouquet of flowers 💐",
+  // she can type it with any capitalization/spaces
+  password: 'ILoveCalebNwasikeAndHeIsMyDaddy',
+  flappy: {
+    photo: '/photos/flappy-mariah.jpg',
+    target: 100, // points needed to unlock the gifts the hard way
+  },
+};
+
 export const gifts = [
   {
     title: 'A little something 💝',
