@@ -1,6 +1,17 @@
 <script>
   // A cute rose, seen from above, that doubles as a planet 🌹
-  let { size = 140, glow = true } = $props();
+  // Pass a `colors` object to re-tint it (see totoroPlanet in data/memories.js).
+  let { size = 140, glow = true, colors = {} } = $props();
+
+  const c = {
+    light: '#ffe0d4',
+    mid: 'var(--peach-fuzz)',
+    deep: 'var(--powder-blush)',
+    heartEdge: 'var(--desert-sand)',
+    leaf: 'var(--ash-grey)',
+    swirl: 'var(--dusty-mauve)',
+    ...colors,
+  };
 
   const uid = Math.random().toString(36).slice(2, 8);
 </script>
@@ -14,25 +25,25 @@
 >
   <defs>
     <radialGradient id="petal-{uid}" cx="50%" cy="42%" r="65%">
-      <stop offset="0%" stop-color="#ffe0d4" />
-      <stop offset="55%" stop-color="var(--peach-fuzz)" />
-      <stop offset="100%" stop-color="var(--powder-blush)" />
+      <stop offset="0%" stop-color={c.light} />
+      <stop offset="55%" stop-color={c.mid} />
+      <stop offset="100%" stop-color={c.deep} />
     </radialGradient>
     <radialGradient id="heart-{uid}" cx="50%" cy="50%" r="55%">
-      <stop offset="0%" stop-color="var(--powder-blush)" />
-      <stop offset="100%" stop-color="var(--desert-sand)" />
+      <stop offset="0%" stop-color={c.deep} />
+      <stop offset="100%" stop-color={c.heartEdge} />
     </radialGradient>
   </defs>
 
   <!-- little leaves peeking out -->
-  <g fill="var(--ash-grey)" opacity="0.9">
+  <g fill={c.leaf} opacity="0.9">
     <ellipse cx="18" cy="76" rx="12" ry="5.5" transform="rotate(-35 18 76)" />
     <ellipse cx="82" cy="76" rx="12" ry="5.5" transform="rotate(35 82 76)" />
     <ellipse cx="50" cy="90" rx="11" ry="5" />
   </g>
 
   <!-- outer ring of petals -->
-  <g fill="url(#petal-{uid})" stroke="var(--powder-blush)" stroke-width="1">
+  <g fill="url(#petal-{uid})" stroke={c.deep} stroke-width="1">
     {#each Array(8) as _, i}
       <ellipse
         cx="50"
@@ -45,7 +56,7 @@
   </g>
 
   <!-- middle ring of petals -->
-  <g fill="url(#petal-{uid})" stroke="var(--desert-sand)" stroke-width="1">
+  <g fill="url(#petal-{uid})" stroke={c.heartEdge} stroke-width="1">
     {#each Array(6) as _, i}
       <ellipse
         cx="50"
@@ -67,7 +78,7 @@
        a 5 5 0 1 1 -5 5
        a 2.5 2.5 0 1 0 2.5 -2.5"
     fill="none"
-    stroke="var(--dusty-mauve)"
+    stroke={c.swirl}
     stroke-width="2.2"
     stroke-linecap="round"
     opacity="0.85"

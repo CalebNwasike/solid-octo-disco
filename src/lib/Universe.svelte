@@ -4,15 +4,30 @@
   import MemoryModal from './MemoryModal.svelte';
   import SpecialMessage from './SpecialMessage.svelte';
   import GiftsSection from './GiftsSection.svelte';
-  import { memories, specialPlanet, specialPlanet2 } from './data/memories.js';
+  import WordleRose from './WordleRose.svelte';
+  import GoddessPlanet from './GoddessPlanet.svelte';
+  import GoddessOverlay from './GoddessOverlay.svelte';
+  import TotoroSlideshow from './TotoroSlideshow.svelte';
+  import {
+    memories,
+    specialPlanet,
+    specialPlanet2,
+    wordleRose,
+    goddessPlanet,
+    totoroPlanet,
+  } from './data/memories.js';
 
   const specials = [specialPlanet, specialPlanet2];
 
   let openMemory = $state(null);
   let showGifts = $state(false);
-  let zooming = $state(false); // zooming toward a special planet
+  let zooming = $state(false); // zooming toward a far-off planet
+  let zoomTarget = $state(null); // which planet the zoom aims at
   let activeSpecial = $state(null); // which special planet is open
   let showSpecial = $state(false);
+  let showWordle = $state(false);
+  let showGoddess = $state(false);
+  let showTotoro = $state(false);
   // tiny floating star particles, scattered once on load
   const particles = Array.from({ length: 26 }, (_, i) => ({
     x: Math.random() * 100,
@@ -23,16 +38,32 @@
     twinkle: 2 + Math.random() * 3,
   }));
 
+  function zoomInto(planet, open) {
+    zoomTarget = planet;
+    zooming = true;
+    setTimeout(open, 900);
+  }
+
   function openSpecial(planet) {
     activeSpecial = planet;
-    zooming = true;
-    setTimeout(() => (showSpecial = true), 900);
+    zoomInto(planet, () => (showSpecial = true));
   }
 
   function closeSpecial() {
     showSpecial = false;
     zooming = false;
     activeSpecial = null;
+    zoomTarget = null;
+  }
+
+  function openGoddess() {
+    zoomInto(goddessPlanet, () => (showGoddess = true));
+  }
+
+  function closeGoddess() {
+    showGoddess = false;
+    zooming = false;
+    zoomTarget = null;
   }
 </script>
 
@@ -53,7 +84,7 @@
   <div
     class="scene"
     class:zooming
-    style="transform-origin: {(activeSpecial ?? specialPlanet).x}% {(activeSpecial ?? specialPlanet).y}%;"
+    style="transform-origin: {(zoomTarget ?? specialPlanet).x}% {(zoomTarget ?? specialPlanet).y}%;"
   >
     <header class="header">
       <p class="gfday">Happy National Girlfriend's Day 💗</p>
@@ -86,6 +117,42 @@
         <span class="sparkle" aria-hidden="true">✨</span>
       </button>
     {/each}
+
+    <!-- the wordle rose 🙈 -->
+    <button
+      class="planet"
+      style="left:{wordleRose.x}%; top:{wordleRose.y}%; --delay:3.1s; --drift:8s;"
+      onclick={() => (showWordle = true)}
+      aria-label={wordleRose.name}
+    >
+      <RosePlanet size={wordleRose.size} />
+      <span class="planet-name">{wordleRose.name}</span>
+      <span class="sparkle" aria-hidden="true">🤫</span>
+    </button>
+
+    <!-- the goddess planet 🏛️ -->
+    <button
+      class="planet"
+      style="left:{goddessPlanet.x}%; top:{goddessPlanet.y}%; --delay:1.7s; --drift:11s;"
+      onclick={openGoddess}
+      aria-label={goddessPlanet.name}
+    >
+      <GoddessPlanet size={goddessPlanet.size} />
+      <span class="planet-name">{goddessPlanet.name}</span>
+      <span class="sparkle" aria-hidden="true">✨</span>
+    </button>
+
+    <!-- the totoro planet 🌱 -->
+    <button
+      class="planet"
+      style="left:{totoroPlanet.x}%; top:{totoroPlanet.y}%; --delay:0.6s; --drift:10s;"
+      onclick={() => (showTotoro = true)}
+      aria-label={totoroPlanet.name}
+    >
+      <RosePlanet size={totoroPlanet.size} colors={totoroPlanet.colors} />
+      <span class="planet-name">{totoroPlanet.name}</span>
+      <span class="sparkle" aria-hidden="true">🌱</span>
+    </button>
   </div>
 
   <button class="gifts-btn" onclick={() => (showGifts = true)}>
@@ -103,6 +170,18 @@
       lock={activeSpecial.lock ?? null}
       onClose={closeSpecial}
     />
+  {/if}
+
+  {#if showWordle}
+    <WordleRose data={wordleRose} onClose={() => (showWordle = false)} />
+  {/if}
+
+  {#if showGoddess}
+    <GoddessOverlay data={goddessPlanet} onClose={closeGoddess} />
+  {/if}
+
+  {#if showTotoro}
+    <TotoroSlideshow data={totoroPlanet} onClose={() => (showTotoro = false)} />
   {/if}
 
   {#if showGifts}
@@ -289,7 +368,7 @@
     transform: translateY(0);
   }
 
-  .special .sparkle {
+  .sparkle {
     position: absolute;
     top: -12px;
     right: -10px;
