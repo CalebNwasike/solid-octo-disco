@@ -18,6 +18,7 @@
     wordleRose,
     goddessPlanet,
     totoroPlanet,
+    memeRose,
   } from './data/memories.js';
 
   const specials = [specialPlanet, specialPlanet2];
@@ -172,6 +173,18 @@
       <GoddessPlanet size={goddessPlanet.size} />
       <span class="planet-name">{goddessPlanet.name}</span>
       <span class="sparkle" aria-hidden="true">✨</span>
+    </button>
+
+    <!-- the meme flower 😭 -->
+    <button
+      class="planet"
+      style="left:{memeRose.x}%; top:{memeRose.y}%; --delay:2.7s; --drift:7s;"
+      onclick={() => (openMemory = memeRose)}
+      aria-label={memeRose.name}
+    >
+      <RosePlanet size={memeRose.size} />
+      <span class="planet-name">{memeRose.name}</span>
+      <span class="sparkle" aria-hidden="true">😂</span>
     </button>
 
     <!-- the totoro planet 🌱 -->

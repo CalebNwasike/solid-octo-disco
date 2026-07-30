@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { sfx } from './sfx.js';
 
   let { onDone } = $props();
 
@@ -19,6 +20,7 @@
   ];
 
   onMount(() => {
+    const stopWarpSound = sfx.warp(WARP_MS / 1000);
     const ctx = canvas.getContext('2d');
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
@@ -102,6 +104,7 @@
       cancelAnimationFrame(raf);
       clearInterval(noteTimer);
       clearTimeout(doneTimer);
+      stopWarpSound();
       window.removeEventListener('resize', onResize);
     };
   });

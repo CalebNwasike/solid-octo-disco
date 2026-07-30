@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { sfx } from './sfx.js';
 
   let { photo, target = 100, onWin, onBack } = $props();
 
@@ -50,11 +51,13 @@
     }
     if (phase === 'dead') return;
     birdVel = FLAP;
+    sfx.flap();
   }
 
   function die() {
     phase = 'dead';
     if (score > best) best = score;
+    sfx.hit();
   }
 
   function restart() {
@@ -88,6 +91,9 @@
           if (score >= target) {
             phase = 'won';
             if (score > best) best = score;
+            sfx.win();
+          } else {
+            sfx.score();
           }
         }
       }

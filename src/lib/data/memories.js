@@ -100,6 +100,19 @@ export const specialPlanet = {
     'Mariah, you are my entire world and my eternal happiness. My affection for you reaches beyond the furthest galaxy. Our bond is timeless, shining with the perfection of the stars. Just as the cosmos slowly developed its breathtaking splendor through countless cosmic events, our relationship becomes more stunning as we grow together. You are my universe, and I promise to be the person who deserves your love forever.',
 };
 
+// The meme flower 😭 — drop the one-wish-willow meme at
+// public/photos/meme.jpg (any meme works, just match the path).
+export const memeRose = {
+  id: 'meme',
+  name: 'certified meme flower 😭',
+  photo: '/photos/meme.jpg',
+  quote: 'one wish... and I would still pick you, every single time 🌠',
+  author: null,
+  x: 47,
+  y: 88,
+  size: 100,
+};
+
 // The wordle rose 🙈 — a quick 4-letter wordle (max 4 tries).
 // When she solves it, the photo + caption below are revealed.
 export const wordleRose = {
