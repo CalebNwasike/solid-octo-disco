@@ -1,10 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { fade, scale } from 'svelte/transition';
-
-  // 🔊 MUSIC (coming later): drop the Totoro theme in public/ (e.g.
-  // public/totoro-theme.mp3) and add here:
-  //   <audio src="/totoro-theme.mp3" autoplay loop></audio>
+  import { music } from './data/media.js';
 
   let { data, onClose } = $props();
 
@@ -23,7 +20,19 @@
 
   onMount(() => {
     const timer = setInterval(next, 3500);
-    return () => clearInterval(timer);
+
+    // 🔊 the Totoro theme — plays while this planet is open
+    // (drop the file at public/audio/totoro-theme.mp3)
+    const theme = new Audio(music.totoro);
+    theme.loop = true;
+    theme.volume = 0.65;
+    theme.play().catch(() => {}); // stays quiet if the file isn't there yet
+
+    return () => {
+      clearInterval(timer);
+      theme.pause();
+      theme.src = '';
+    };
   });
 </script>
 

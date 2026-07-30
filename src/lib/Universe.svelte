@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import RosePlanet from './RosePlanet.svelte';
   import MemoryModal from './MemoryModal.svelte';
@@ -8,6 +9,8 @@
   import GoddessPlanet from './GoddessPlanet.svelte';
   import GoddessOverlay from './GoddessOverlay.svelte';
   import TotoroSlideshow from './TotoroSlideshow.svelte';
+  import SecretPage from './SecretPage.svelte';
+  import { music } from './data/media.js';
   import {
     memories,
     specialPlanet,
@@ -28,6 +31,35 @@
   let showWordle = $state(false);
   let showGoddess = $state(false);
   let showTotoro = $state(false);
+  let showSecret = $state(false);
+  let musicOn = $state(true);
+
+  // 🔊 ambient space music — stays quiet if the file isn't there yet
+  // (drop it at public/audio/ambient.mp3)
+  let ambient = null;
+
+  function ensureAmbient() {
+    if (!ambient) {
+      ambient = new Audio(music.ambient);
+      ambient.loop = true;
+      ambient.volume = 0.4;
+    }
+    return ambient;
+  }
+
+  $effect(() => {
+    const a = ensureAmbient();
+    // pause the ambient track while the Totoro theme plays
+    if (musicOn && !showTotoro) a.play().catch(() => {});
+    else a.pause();
+  });
+
+  onMount(() => () => {
+    if (ambient) {
+      ambient.pause();
+      ambient.src = '';
+    }
+  });
   // tiny floating star particles, scattered once on load
   const particles = Array.from({ length: 26 }, (_, i) => ({
     x: Math.random() * 100,
@@ -159,6 +191,19 @@
     🎁 gifts for you
   </button>
 
+  <button
+    class="music-btn"
+    onclick={() => (musicOn = !musicOn)}
+    aria-label={musicOn ? 'Mute music' : 'Play music'}
+  >
+    {musicOn ? '🔊' : '🔇'}
+  </button>
+
+  <!-- shhh... 🤫 -->
+  <button class="secret-btn" onclick={() => (showSecret = true)} aria-label="✦">
+    ✦
+  </button>
+
   {#if openMemory}
     <MemoryModal memory={openMemory} onClose={() => (openMemory = null)} />
   {/if}
@@ -182,6 +227,10 @@
 
   {#if showTotoro}
     <TotoroSlideshow data={totoroPlanet} onClose={() => (showTotoro = false)} />
+  {/if}
+
+  {#if showSecret}
+    <SecretPage onClose={() => (showSecret = false)} />
   {/if}
 
   {#if showGifts}
@@ -403,6 +452,52 @@
     color: var(--space-black);
     border-color: var(--peach-fuzz);
     box-shadow: 0 0 24px rgba(255, 201, 181, 0.5);
+  }
+
+  .music-btn {
+    position: absolute;
+    bottom: 1.6rem;
+    left: 1.6rem;
+    z-index: 10;
+    width: 2.9rem;
+    height: 2.9rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1.5px solid var(--dusty-mauve);
+    background: rgba(10, 12, 13, 0.6);
+    backdrop-filter: blur(4px);
+    font-size: 1.1rem;
+    transition: all 0.25s;
+  }
+
+  .music-btn:hover {
+    border-color: var(--peach-fuzz);
+    box-shadow: 0 0 18px rgba(255, 201, 181, 0.4);
+  }
+
+  /* the secret star ✦ — top right, easy to miss on purpose */
+  .secret-btn {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.4rem;
+    z-index: 10;
+    font-size: 1.15rem;
+    color: rgba(255, 201, 181, 0.5);
+    padding: 0.4rem;
+    animation: secret-twinkle 3.5s ease-in-out infinite;
+    transition: color 0.25s, transform 0.25s;
+  }
+
+  .secret-btn:hover {
+    color: var(--peach-fuzz);
+    transform: scale(1.3) rotate(20deg);
+    animation: none;
+  }
+
+  @keyframes secret-twinkle {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.95; }
   }
 
   @media (max-width: 640px) {
