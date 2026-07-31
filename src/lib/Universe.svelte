@@ -50,8 +50,10 @@
 
   $effect(() => {
     const a = ensureAmbient();
-    // pause the ambient track while the Totoro theme plays
-    if (musicOn && !showTotoro) a.play().catch(() => {});
+    // pause the ambient track while the Totoro theme or a memory's
+    // own music (e.g. the meme flower) is playing
+    const otherMusicPlaying = showTotoro || Boolean(openMemory?.music);
+    if (musicOn && !otherMusicPlaying) a.play().catch(() => {});
     else a.pause();
   });
 

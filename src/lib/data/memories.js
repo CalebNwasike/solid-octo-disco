@@ -101,13 +101,16 @@ export const specialPlanet = {
 };
 
 // The meme flower 😭 — drop the one-wish-willow meme at
-// public/photos/meme.jpg (any meme works, just match the path).
+// public/photos/meme.jpg (any meme works, just match the path), and
+// drop a matching sound at public/audio/meme.mp3 — it plays on loop
+// while this card is open (leave "music" as null for no sound).
 export const memeRose = {
   id: 'meme',
   name: 'certified meme flower 😭',
   photo: '/photos/meme.jpg',
   quote: 'one wish... and I would still pick you, every single time 🌠',
   author: null,
+  music: '/audio/meme.mp3',
   x: 47,
   y: 88,
   size: 100,

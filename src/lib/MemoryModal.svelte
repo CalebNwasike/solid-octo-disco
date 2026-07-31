@@ -1,9 +1,24 @@
 <script>
+  import { onMount } from 'svelte';
   import { fade, scale } from 'svelte/transition';
 
   let { memory, onClose } = $props();
 
   let imgFailed = $state(false);
+
+  // 🔊 optional per-memory music (e.g. memeRose.music) — plays while
+  // this card is open, stays silent if the file isn't there yet
+  onMount(() => {
+    if (!memory.music) return;
+    const audio = new Audio(memory.music);
+    audio.loop = true;
+    audio.volume = 0.6;
+    audio.play().catch(() => {});
+    return () => {
+      audio.pause();
+      audio.src = '';
+    };
+  });
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
