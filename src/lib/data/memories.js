@@ -19,7 +19,9 @@ export const memories = [
     quote:
       'The strongest relationships are not always the ones that show no struggles, but the ones that grow through them.',
     author: null,
-    // position of this rose-planet in the universe (percent of screen)
+    // position in the universe — x/y are percent of the WORLD, which is
+    // twice the screen in both directions (the camera pans with the mouse),
+    // so planets far apart here may not be visible in the same view
     x: 18,
     y: 30,
     size: 150,

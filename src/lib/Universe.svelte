@@ -57,11 +57,43 @@
     else a.pause();
   });
 
-  onMount(() => () => {
-    if (ambient) {
-      ambient.pause();
-      ambient.src = '';
-    }
+  // 🎥 the camera — the world is 2x the screen in both directions,
+  // and the view glides toward wherever the mouse points
+  let camX = $state(0);
+  let camY = $state(0);
+  let targetFx = 0.5; // mouse position as a 0..1 fraction of the screen
+  let targetFy = 0.5;
+
+  function onPointerMove(e) {
+    targetFx = e.clientX / window.innerWidth;
+    targetFy = e.clientY / window.innerHeight;
+  }
+
+  onMount(() => {
+    // start looking at the center of the world
+    camX = -0.5 * window.innerWidth;
+    camY = -0.5 * window.innerHeight;
+
+    let raf;
+    const glide = () => {
+      // freeze the camera while zooming into a far-off planet
+      if (!zooming) {
+        const tx = -targetFx * window.innerWidth;
+        const ty = -targetFy * window.innerHeight;
+        camX += (tx - camX) * 0.05;
+        camY += (ty - camY) * 0.05;
+      }
+      raf = requestAnimationFrame(glide);
+    };
+    raf = requestAnimationFrame(glide);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      if (ambient) {
+        ambient.pause();
+        ambient.src = '';
+      }
+    };
   });
   // tiny floating star particles, scattered once on load
   const particles = Array.from({ length: 26 }, (_, i) => ({
@@ -102,32 +134,34 @@
   }
 </script>
 
-<div class="universe" in:fade={{ duration: 700 }}>
-  <div class="nebula"></div>
-  <div class="stars layer-1"></div>
-  <div class="stars layer-2"></div>
+<svelte:window onpointermove={onPointerMove} />
 
-  <div class="particles" aria-hidden="true">
-    {#each particles as p}
-      <span
-        class="particle"
-        style="left:{p.x}%; top:{p.y}%; width:{p.size}px; height:{p.size}px; --dur:{p.dur}s; --delay:{p.delay}s; --twinkle:{p.twinkle}s;"
-      ></span>
-    {/each}
+<div class="universe" in:fade={{ duration: 700 }}>
+  <!-- distant background drifts slower than the roses for depth -->
+  <div class="parallax far" style="transform: translate3d({camX * 0.1}px, {camY * 0.1}px, 0);">
+    <div class="nebula"></div>
+    <div class="stars layer-1"></div>
+    <div class="stars layer-2"></div>
   </div>
 
-  <div
-    class="scene"
-    class:zooming
-    style="transform-origin: {(zoomTarget ?? specialPlanet).x}% {(zoomTarget ?? specialPlanet).y}%;"
-  >
-    <header class="header">
-      <p class="gfday">Happy National Girlfriend's Day 💗</p>
-      <h1>Our Universe</h1>
-      <p>hover a rose... then click it 💗</p>
-    </header>
+  <div class="parallax mid" style="transform: translate3d({camX * 0.25}px, {camY * 0.25}px, 0);" aria-hidden="true">
+    <div class="particles">
+      {#each particles as p}
+        <span
+          class="particle"
+          style="left:{p.x}%; top:{p.y}%; width:{p.size}px; height:{p.size}px; --dur:{p.dur}s; --delay:{p.delay}s; --twinkle:{p.twinkle}s;"
+        ></span>
+      {/each}
+    </div>
+  </div>
 
-    {#each memories as memory, i}
+  <div class="camera" style="transform: translate3d({camX}px, {camY}px, 0);">
+    <div
+      class="scene"
+      class:zooming
+      style="transform-origin: {(zoomTarget ?? specialPlanet).x}% {(zoomTarget ?? specialPlanet).y}%;"
+    >
+      {#each memories as memory, i}
       <button
         class="planet"
         style="left:{memory.x}%; top:{memory.y}%; --delay:{i * 1.3}s; --drift:{6 + i}s;"
@@ -200,7 +234,14 @@
       <span class="planet-name">{totoroPlanet.name}</span>
       <span class="sparkle" aria-hidden="true">🌱</span>
     </button>
+    </div>
   </div>
+
+  <header class="header">
+    <p class="gfday">Happy National Girlfriend's Day 💗</p>
+    <h1>Our Universe</h1>
+    <p>move your mouse to explore... then click a rose 💗</p>
+  </header>
 
   <button class="gifts-btn" onclick={() => (showGifts = true)}>
     🎁 gifts for you
@@ -338,6 +379,24 @@
     to { opacity: 0.9; }
   }
 
+  /* background layers that pan slower than the world for depth */
+  .parallax {
+    position: absolute;
+    inset: -30%;
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  /* the world is twice the screen; the camera translate pans across it */
+  .camera {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    will-change: transform;
+  }
+
   .scene {
     position: absolute;
     inset: 0;
@@ -355,6 +414,7 @@
     top: 2rem;
     left: 0;
     right: 0;
+    z-index: 5;
     text-align: center;
     pointer-events: none;
   }
