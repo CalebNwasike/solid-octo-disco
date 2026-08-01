@@ -15,7 +15,7 @@ export const memories = [
   {
     id: 'rose-1',
     name: 'Where it all began',
-    photo: '/photos/memory-1.jpg',
+    photo: '/photos/memory-1.jpeg',
     quote:
       'The strongest relationships are not always the ones that show no struggles, but the ones that grow through them.',
     author: null,
@@ -29,7 +29,7 @@ export const memories = [
   {
     id: 'rose-2',
     name: 'Us, always',
-    photo: '/photos/memory-2.jpg',
+    photo: '/photos/memory-2.jpeg',
     quote:
       'A true relationship is two unperfect people refusing to give up on each other.',
     author: null,
@@ -40,7 +40,7 @@ export const memories = [
   {
     id: 'rose-3',
     name: 'My strength',
-    photo: '/photos/memory-3.jpg',
+    photo: '/photos/memory-3.jpeg',
     quote:
       'Being deeply loved by someone gives you strength while loving someone deeply gives you courage.',
     author: 'Lao-Tzu',
@@ -51,7 +51,7 @@ export const memories = [
   {
     id: 'rose-4',
     name: 'All of me',
-    photo: '/photos/memory-4.jpg',
+    photo: '/photos/memory-4.jpeg',
     quote: 'All of me loves all of you.',
     author: 'John Legend',
     x: 30,
@@ -61,7 +61,7 @@ export const memories = [
   {
     id: 'rose-5',
     name: 'My smart girl',
-    photo: '/photos/memory-5.jpg',
+    photo: '/photos/memory-5.jpeg',
     quote: 'this is my beautiful woman just being as smart as ever',
     author: null,
     x: 8,
@@ -71,7 +71,7 @@ export const memories = [
   {
     id: 'rose-6',
     name: 'I really do',
-    photo: '/photos/memory-6.jpg',
+    photo: '/photos/memory-6.jpeg',
     quote: 'I really do love you alot 🥺 ...',
     author: null,
     x: 57,
@@ -81,7 +81,7 @@ export const memories = [
   {
     id: 'rose-7',
     name: 'Just look at her',
-    photo: '/photos/memory-7.jpg',
+    photo: '/photos/memory-7.jpeg',
     quote: 'look at this beautiful girl',
     author: null,
     x: 88,
@@ -108,7 +108,7 @@ export const specialPlanet = {
 // while this card is open (leave "music" as null for no sound).
 export const memeRose = {
   id: 'meme',
-  name: 'certified meme flower 😭',
+  name: 'I wish Mariah would love me again...🪄',
   photo: '/photos/meme.jpg',
   quote: 'one wish... and I would still pick you, every single time 🌠',
   author: null,

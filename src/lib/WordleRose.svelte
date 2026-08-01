@@ -135,7 +135,7 @@
       {/if}
     {:else}
       <div class="reveal" in:fade={{ duration: 400 }}>
-        <h2 class="won-title">you got it 😳</h2>
+        <h2 class="won-title">you got it right😳</h2>
         <div class="photo-box">
           {#if !imgFailed}
             <img src={data.photo} alt="hehe" onerror={() => (imgFailed = true)} />

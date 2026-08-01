@@ -20,6 +20,6 @@ export const music = {
 export const secretLink = {
   title: 'shhh... you found a secret 🤫',
   note: 'this one is just for you. click it.',
-  url: 'https://www.youtube.com/', // ← PUT YOUR YOUTUBE LINK HERE
+  url: 'https://www.youtube.com/watch?v=qSxWd6U2fEw', // ← PUT YOUR YOUTUBE LINK HERE
   label: 'open it 💌',
 };

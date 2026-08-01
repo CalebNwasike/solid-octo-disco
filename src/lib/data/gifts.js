@@ -20,7 +20,7 @@
 export const giftsLock = {
   title: 'Ah ah ah...',
   message: 'not so fast, you have to say the password for the giftssss',
-  hint: "Hint: it's on your bouquet of flowers 💐",
+  hint: "Hint: There's a magical star in the far north east, it does not move and is waiting for the princess.",
   // she can type it with any capitalization/spaces
   password: 'ILoveCalebNwasikeAndHeIsMyDaddy',
   flappy: {
@@ -31,21 +31,20 @@ export const giftsLock = {
 
 export const gifts = [
   {
-    title: 'A little something 💝',
-    note: 'Replace me! Put your Amazon gift link here.',
-    url: 'https://www.amazon.com/',
+    title: 'Michel Jackson Impersonator concert in Atlanta!',
+    note: 'I found tickets and have them ready, say the word and I buy.',
+    url: 'https://www.youtube.com/shorts/yIEF-7PgRNM',
     code: null,
   },
   {
-    title: 'Gift card 🌹',
-    note: 'Replace me! Put a real gift-card code here — she can tap to copy it.',
-    url: null,
-    code: 'XXXX-XXXX-XXXX',
+    title: 'Amazon Gift Card🌹',
+    note: 'OOOO you should get some waist beads!',
+    url: 'https://www.amazon.com/g/AQZPAZ936EJZAD?t=SvL',
+    code: 'Love Yah!',
   },
   {
-    title: 'Date night on me 🍽️',
-    note: 'Example of a gift with both a link and a code. Delete or edit me.',
-    url: 'https://www.opentable.com/',
-    code: 'LOVE-2024',
+    title: 'Ropeplay date where I dress as your butler and take you to eat in Downtown Atlanta',
+    note: '(You wont have to touch a single thing...how it should be tho lol)',
+    url: 'https://atlanta.eater.com/maps/essential-korean-restaurants-atlanta',
   },
 ];
